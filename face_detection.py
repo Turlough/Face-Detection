@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
-
+import sys
 import mjpg
 
 # https://github.com/opencv/opencv/tree/master/data/haarcascades
 cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 URL = 'http://172.16.92.210:8081'
 stream = mjpg.Mjpg()
+
 
 def process_image(jpg):
 
@@ -29,5 +30,7 @@ def process_image(jpg):
 
 
 if __name__ == '__main__':
+	if len(sys.argv) > 0:
+		URL = sys.argv[1]
 
 	stream.get_frames(URL, process_image, True)
