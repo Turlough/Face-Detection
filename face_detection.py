@@ -7,12 +7,10 @@ import mjpg
 cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 URL = 'http://172.16.92.210:8081'
 stream = mjpg.Mjpg()
+stream = mjpg.Webcam()
 
 
-def process_image(jpg):
-
-	img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-	image_np = np.array(img)
+def process_image(image_np):
 
 	gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
 
@@ -30,7 +28,14 @@ def process_image(jpg):
 
 
 if __name__ == '__main__':
-	if len(sys.argv) > 0:
-		URL = sys.argv[1]
 
-	stream.get_frames(URL, process_image, True)
+	if len(sys.argv) > 1:
+
+		URL = sys.argv[1]
+		stream = mjpg.Mjpg()
+		stream.get_frames(URL, process_image, True)
+
+	else:
+
+		stream = mjpg.Webcam()
+		stream.get_frames(0, process_image, True)

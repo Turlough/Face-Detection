@@ -9,6 +9,27 @@
 '''
 
 import urllib.request
+import cv2
+import numpy as np
+
+class Webcam:
+
+
+	def __init__(self):
+		self.running = True
+
+
+	def get_frames(self, camera_id, callback, asynchronously = True) :
+
+		capture = cv2.VideoCapture(camera_id)
+
+		while self.running :
+			_, frame = capture.read()
+			frame = cv2.flip(frame, 1)
+			callback(frame)
+
+		capture.release()
+
 
 class Mjpg:
 
@@ -36,10 +57,14 @@ class Mjpg:
 			if a != -1 and b != -1:
 				jpg = buff[a:b+2]
 				buff = buff[b+2:] 
+
+				img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
+				image_np = np.array(img)
+
 				
 				# now invoke the callback
 				if self.running: 
-					callback(jpg)
+					callback(image_np)
 				else:
 					stream.close()
 					break
