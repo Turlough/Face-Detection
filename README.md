@@ -23,5 +23,7 @@ pip3 install -r requirements.txt
 ```
 python face_detection.py http://127.0.0.1:8081
 ```
+Added July 2019: running without arguments will use local webcam instead
+
 
 Pressing keyboard key 'q' exits and closes the window.
